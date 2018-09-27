@@ -25,7 +25,7 @@ public class Item {
 
     @JsonValue
     public Map getJsonObject() {
-        Map result = new LinkedHashMap();
+        var result = new LinkedHashMap();
         result.put("name", name);
         result.put("type", this.getClass().getName().toLowerCase().substring(23));
         return result;
