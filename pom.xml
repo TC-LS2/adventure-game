@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>adventure-game</artifactId>
+    <artifactId>adventure-game-origin</artifactId>
     <version>0.2.0</version>
 
     <name>Adventure Game</name>
@@ -110,10 +110,13 @@
                 <version>2.0.4</version>
                 <configuration>
                     <jdkVersion>10</jdkVersion>
+                    <includes>
+                        <include>build</include>
+                    </includes>
                     <!-- Use your own application name -->
-                    <appName>adventure-game</appName>
+                    <appName>adventure-game-origin</appName>
                     <processTypes>
-                        <web>java $JAVA_OPTS -cp target/classes:target/dependency/* com.drpicox.game.Application</web>
+                        <web>java $JAVA_OPTS -Dspring.server.port=$PORT -cp target/classes:target/dependency/* com.drpicox.game.Application</web>
                         <!-- Tell Heroku how to launch your application -->
                         <!-- You might have to remove the ./ in front   -->
                         <!--
