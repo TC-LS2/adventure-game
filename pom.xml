@@ -115,7 +115,7 @@
                     <processTypes>
                         <web>java $JAVA_OPTS -Dspring.server.port=$PORT -cp target/classes:target/dependency/* com.drpicox.game.Application</web>
                         <web>java -jar ./target/fishingLagoon-1.0.0-jar-with-dependencies.jar</web>
-                        -->
+                    
                     </processTypes>
                 </configuration>
             </plugin>
