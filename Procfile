@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/adventure-game-origin-0.2.0.jar
+web: java -Dserver.port=$PORT -cp target/classes:target/dependency/* com.drpicox.game.Application
