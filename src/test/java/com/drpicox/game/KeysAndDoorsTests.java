@@ -127,24 +127,16 @@ public class KeysAndDoorsTests {
     }
 
     @Test
-    public void closed_doors_1() throws Exception {
+    public void closed_doors() throws Exception {
         helper.putWorld(buildWorld());
 
-        helper.runCommand("kirito", "look")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("Home sweet home")))
-                .andExpect(jsonPath("$.room.description", containsString("You are in front of your home")))
-                .andExpect(jsonPath("$.room.item.name", is("key")))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        allOf(hasEntry("name", "north"), (Matcher) hasEntry("open", false)),
-                        allOf(hasEntry("name", "west"), (Matcher) hasEntry("open", false))
-                )));
-    }
-
-    @Test
-    public void closed_doors_2() throws Exception {
-        helper.putWorld(buildWorld());
+        helper.runCommand("kirito", "look");
+        helper.assertResult("Home sweet home\n" +
+                "You are in front of your home, main door is closed\n" +
+                ". You remember that you have the key under the car\n" +
+                "Exits: north (closed), west (closed).\n" +
+                "There is the key key.\n" +
+                "Player has 16 life points.");
 
         helper.runCommand("kirito", "move", "north")
                 .andExpect(status().isBadRequest())
@@ -152,39 +144,23 @@ public class KeysAndDoorsTests {
     }
 
     @Test
-    public void get_the_key_and_open_the_door_1() throws Exception {
-        helper.putWorld(buildWorld());
-
-        helper.runCommand("kirito", "get")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.player.key.name", is("key")))
-                .andExpect(jsonPath("$.room.name", is("Home sweet home")))
-                .andExpect(jsonPath("$.room.description", containsString("You are in front of your home")))
-                .andExpect(jsonPath("$.room.item", isEmptyOrNullString()))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        allOf(hasEntry("name", "north"), (Matcher) hasEntry("open", false)),
-                        allOf(hasEntry("name", "west"), (Matcher) hasEntry("open", false))
-                )));
-    }
-
-    @Test
-    public void get_the_key_and_open_the_door_2() throws Exception {
+    public void get_the_key_and_open_the_door() throws Exception {
         helper.putWorld(buildWorld());
 
         helper.runCommand("kirito", "get");
-        helper.runCommand("kirito", "move", "north")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.player.key", isEmptyOrNullString()))
-                .andExpect(jsonPath("$.room.name", is("Home sweet home")))
-                .andExpect(jsonPath("$.room.description", containsString("You are in the main room of your home")))
-                .andExpect(jsonPath("$.room.item", isEmptyOrNullString()))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        allOf(hasEntry("name", "south"), (Matcher) hasEntry("open", true)),
-                        allOf(hasEntry("name", "north"), (Matcher) hasEntry("open", true)),
-                        allOf(hasEntry("name", "east"), (Matcher) hasEntry("open", true))
-                )));
+        helper.assertResult("Home sweet home\n" +
+                "You are in front of your home, main door is closed\n" +
+                ". You remember that you have the key under the car\n" +
+                "Exits: north (closed), west (closed).\n" +
+                "Player has the key key.\n" +
+                "Player has 16 life points.");
+
+        helper.runCommand("kirito", "move", "north");
+        helper.assertResult("Home sweet home\n" +
+                "You are in the main room of your home. There is pl\n" +
+                "enty of light and space.\n" +
+                "Exits: north, south, east.\n" +
+                "Player has 16 life points.");
     }
 
     @Test
@@ -193,17 +169,12 @@ public class KeysAndDoorsTests {
 
         helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "move", "south")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.player.key", isEmptyOrNullString()))
-                .andExpect(jsonPath("$.room.name", is("Home sweet home")))
-                .andExpect(jsonPath("$.room.description", containsString("You are in front of your home")))
-                .andExpect(jsonPath("$.room.item", isEmptyOrNullString()))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        allOf(hasEntry("name", "north"), (Matcher) hasEntry("open", true)),
-                        allOf(hasEntry("name", "west"), (Matcher) hasEntry("open", false))
-                )));
+        helper.runCommand("kirito", "move", "south");
+        helper.assertResult("Home sweet home\n" +
+                "You are in front of your home, main door is closed\n" +
+                ". You remember that you have the key under the car\n" +
+                "Exits: north, west (closed).\n" +
+                "Player has 16 life points.");
     }
 
     @Test
@@ -217,63 +188,43 @@ public class KeysAndDoorsTests {
     }
 
     @Test
-    public void one_hand_and_so_many_keys_1() throws Exception {
-        helper.putWorld(buildWorld());
-
-        helper.runCommand("kirito", "get");
-        helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "move", "north")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.key", isEmptyOrNullString()))
-                .andExpect(jsonPath("$.room.description", containsString("Here you have some useful keys")))
-                .andExpect(jsonPath("$.room.item.name", is("rust key")));
-    }
-
-    @Test
-    public void one_hand_and_so_many_keys_2() throws Exception {
+    public void one_hand_and_so_many_keys() throws Exception {
         helper.putWorld(buildWorld());
 
         helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "north");
         helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "get")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.key.name", is("rust key")))
-                .andExpect(jsonPath("$.room.description", containsString("Here you have some useful keys")))
-                .andExpect(jsonPath("$.room.item", isEmptyOrNullString()));
-    }
-
-    @Test
-    public void one_hand_and_so_many_keys_3() throws Exception {
-        helper.putWorld(buildWorld());
+        helper.assertResult("Key Locker\n" +
+                "Here you have some useful keys\n" +
+                "Exits: south.\n" +
+                "There is the rust key key.\n" +
+                "Player has 16 life points.");
 
         helper.runCommand("kirito", "get");
-        helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "get");
-        helper.runCommand("kirito", "move", "south");
-        helper.runCommand("kirito", "move", "east")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.key.name", is("rust key")))
-                .andExpect(jsonPath("$.room.description", containsString("That it is a great kitchen")))
-                .andExpect(jsonPath("$.room.item.name", is("small key")));
-    }
+        helper.assertResult("Key Locker\n" +
+                "Here you have some useful keys\n" +
+                "Exits: south.\n" +
+                "Player has the rust key key.\n" +
+                "Player has 16 life points.");
 
-    @Test
-    public void one_hand_and_so_many_keys_4() throws Exception {
-        helper.putWorld(buildWorld());
-
-        helper.runCommand("kirito", "get");
-        helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "south");
         helper.runCommand("kirito", "move", "east");
-        helper.runCommand("kirito", "get")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.key.name", is("small key")))
-                .andExpect(jsonPath("$.room.description", containsString("That it is a great kitchen")))
-                .andExpect(jsonPath("$.room.item.name", is("rust key")));
+        helper.assertResult("Kitchen\n" +
+                "That it is a great kitchen. There is a cupboard in\n" +
+                " the south.\n" +
+                "Exits: east (closed), west.\n" +
+                "There is the small key key.\n" +
+                "Player has the rust key key.\n" +
+                "Player has 16 life points.");
+
+        helper.runCommand("kirito", "get");
+        helper.assertResult("Kitchen\n" +
+                "That it is a great kitchen. There is a cupboard in\n" +
+                " the south.\n" +
+                "Exits: east (closed), west.\n" +
+                "There is the rust key key.\n" +
+                "Player has the small key key.\n" +
+                "Player has 16 life points.");
     }
 
     @Test

@@ -79,7 +79,6 @@ public class HelloWorldTests {
     public void do_login_and_look_again() throws Exception {
         helper.putWorld(buildWorld());
 
-
         helper.runCommand("kirito", "look");
         helper.assertResult("A new world\n" +
                 "You see in front of your eyes one of the most beau\n" +

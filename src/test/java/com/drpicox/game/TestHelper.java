@@ -5,6 +5,7 @@ import com.drpicox.game.items.ItemRepository;
 import com.drpicox.game.monsters.MonsterRepository;
 import com.drpicox.game.players.PlayerRepository;
 import com.drpicox.game.rooms.RoomRepository;
+import com.drpicox.game.tools.GameResultStringifier;
 import com.drpicox.game.tools.WorldBuilder;
 import com.drpicox.game.world.TextWorldFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,11 +52,19 @@ public class TestHelper {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    @Autowired private MockMvc mockMvc;
-    @Autowired private ItemRepository itemRepository;
-    @Autowired private MonsterRepository monsterRepository;
-    @Autowired private RoomRepository roomRepository;
-    @Autowired private PlayerRepository playerRepository;
+    private MockMvc mockMvc;
+    private ItemRepository itemRepository;
+    private MonsterRepository monsterRepository;
+    private RoomRepository roomRepository;
+    private PlayerRepository playerRepository;
+
+    public TestHelper(MockMvc mockMvc, ItemRepository itemRepository, MonsterRepository monsterRepository, RoomRepository roomRepository, PlayerRepository playerRepository) {
+        this.mockMvc = mockMvc;
+        this.itemRepository = itemRepository;
+        this.monsterRepository = monsterRepository;
+        this.roomRepository = roomRepository;
+        this.playerRepository = playerRepository;
+    }
 
     private ResultActions lastResultActions = null;
     private List<String> commandsStrings = new ArrayList<>();
@@ -128,64 +137,7 @@ public class TestHelper {
     }
 
     private String gameToString(Map game) {
-        var result = new StringBuilder();
-        var player = (Map) game.get("player");
-        var room = (Map) game.get("room");
-
-        result.append(room.get("name")).append("\n");
-        result.append(wrap((String) room.get("description")));
-
-        var exits = (List<Map>) room.get("exits");
-        if (exits != null && !exits.isEmpty()) {
-            result.append("Exits: ")
-                    .append(
-                            String.join(", ", exits.stream().map(exit -> (String) exit.get("name")).toArray(String[]::new))
-                    ).append(".\n");
-        }
-
-        var item = (Map) room.get("item");
-        if (item != null) {
-            result.append("There is the item ").append(item.get("name")).append(".\n");
-        }
-        var monster = (Map) room.get("monster");
-        if (monster != null) {
-            result.append("There is the monster ").append(monster.get("name")).append(".\n");
-        }
-
-        var key = (Map) player.get("key");
-        if (key != null) {
-            result.append("Has the key ").append(key.get("name")).append(".\n");
-        }
-        var shield = (Map) player.get("shield");
-        if (shield != null) {
-            result.append("Has the shield ").append(shield.get("name")).append(".\n");
-        }
-        var weapon = (Map) player.get("weapon");
-        if (weapon != null) {
-            result.append("Has the weapon ").append(weapon.get("name")).append(".\n");
-        }
-
-        result.append("Player has ")
-                .append(player.get("lifePoints"))
-                .append(" life points.");
-
-        return result.toString();
-    }
-
-    private String wrap(String text) {
-        var result = new StringBuilder();
-        var offset = 0;
-
-        while (offset < text.length()) {
-            var endIndex = Math.min(offset + 50, text.length());
-            var chuck = text.substring(offset, endIndex);
-
-            result.append(chuck).append("\n");
-
-            offset += endIndex;
-        }
-
-        return result.toString();
+        return new GameResultStringifier().toString(game);
     }
 
 

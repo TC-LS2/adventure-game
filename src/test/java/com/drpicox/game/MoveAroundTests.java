@@ -137,83 +137,58 @@ public class MoveAroundTests {
     public void see_where_you_can_go() throws Exception {
         helper.putWorld(buildWorld());
 
-        helper.runCommand("kirito", "look")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("A new world")))
-                .andExpect(jsonPath("$.room.description", containsString("You see in front of your eyes one of the most")))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        hasEntry("name", "north"),
-                        hasEntry("name", "south"),
-                        hasEntry("name", "west")
-                )));
+        helper.runCommand("kirito", "look");
+        helper.assertResult("A new world\n" +
+                "You see in front of your eyes one of the most beau\n" +
+                "tiful and incredible worlds that you can imagine. \n" +
+                "ith tiny islands, in the east, just far away, you \n" +
+                "the clouds.\n" +
+                "Exits: north, south, west.\n" +
+                "Player has 16 life points.");
     }
 
     @Test
     public void move() throws Exception {
         helper.putWorld(buildWorld());
 
-        helper.runCommand("kirito", "move", "south")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("Crystal Beach")))
-                .andExpect(jsonPath("$.room.description", containsString("There is one of the most beautiful beaches")))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        hasEntry("name", "north"),
-                        hasEntry("name", "west")
-                )));
+        helper.runCommand("kirito", "move", "south");
+        helper.assertResult("Crystal Beach\n" +
+                "There is one of the most beautiful beaches that yo\n" +
+                "u can imagine. Soft sand, great palm trees, water \n" +
+                "n endless sea, with some spotted islands far away.\n" +
+                "Exits: north, west.\n" +
+                "Player has 16 life points.");
     }
 
     @Test
-    public void move_towards_other_directions_1() throws Exception {
+    public void move_towards_other_directions() throws Exception {
         helper.putWorld(buildWorld());
 
         helper.runCommand("kirito", "move", "south");
-        helper.runCommand("kirito", "move", "west")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("Crystal Beach")))
-                .andExpect(jsonPath("$.room.description", containsString("The beach extends until the infinity")))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        hasEntry("name", "north"),
-                        hasEntry("name", "east")
-                )));
-    }
 
-    @Test
-    public void move_towards_other_directions_2() throws Exception {
-        helper.putWorld(buildWorld());
-
-        helper.runCommand("kirito", "move", "south");
         helper.runCommand("kirito", "move", "west");
-        helper.runCommand("kirito", "move", "north")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("Enchanted Forest")))
-                .andExpect(jsonPath("$.room.description", containsString("There is a small river traversing the Enchanted")))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        hasEntry("name", "south"),
-                        hasEntry("name", "east")
-                )));
-    }
+        helper.assertResult("Crystal Beach\n" +
+                "The beach extends until the infinity. You are wond\n" +
+                "ering if you start walking direction west will the\n" +
+                "all path that goes to the Enchanted Forest.\n" +
+                "Exits: north, east.\n" +
+                "Player has 16 life points.");
 
-    @Test
-    public void move_towards_other_directions_3() throws Exception {
-        helper.putWorld(buildWorld());
-
-        helper.runCommand("kirito", "move", "south");
-        helper.runCommand("kirito", "move", "west");
         helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "move", "east")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("A new world")))
-                .andExpect(jsonPath("$.room.description", containsString("You see in front of your eyes one of the most")))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        hasEntry("name", "north"),
-                        hasEntry("name", "south"),
-                        hasEntry("name", "west")
-                )));
+        helper.assertResult("Enchanted Forest\n" +
+                "There is a small river traversing the Enchanted Fo\n" +
+                "rest that is flowing to the west. The sound of the\n" +
+                "Exits: south, east.\n" +
+                "Player has 16 life points.");
+
+        helper.runCommand("kirito", "move", "east");
+        helper.assertResult("A new world\n" +
+                "You see in front of your eyes one of the most beau\n" +
+                "tiful and incredible worlds that you can imagine. \n" +
+                "ith tiny islands, in the east, just far away, you \n" +
+                "the clouds.\n" +
+                "Exits: north, south, west.\n" +
+                "Player has 16 life points.");
     }
 
     @Test
@@ -226,30 +201,22 @@ public class MoveAroundTests {
     }
 
     @Test
-    public void its_a_trap_1() throws Exception {
-        helper.putWorld(buildWorld());
-
-        helper.runCommand("kirito", "move", "north")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("Cabin")))
-                .andExpect(jsonPath("$.room.description", containsString("That is your cabin. Old fashioned wooden made")))
-                .andExpect(jsonPath("$.room.exits", containsInAnyOrder(
-                        hasEntry("name", "south"),
-                        hasEntry("name", "east")
-                )));
-    }
-
-    @Test
-    public void its_a_trap_2() throws Exception {
+    public void its_a_trap() throws Exception {
         helper.putWorld(buildWorld());
 
         helper.runCommand("kirito", "move", "north");
-        helper.runCommand("kirito", "move", "east")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("Well")))
-                .andExpect(jsonPath("$.room.description", containsString("You fell into the Well. It is dark and moisty.")))
-                .andExpect(jsonPath("$.room.exits", hasSize(0)));
+        helper.assertResult("Cabin\n" +
+                "That is your cabin. Old fashioned wooden made. You\n" +
+                " are in the yard in front of it, with beautiful ve\n" +
+                " is a small path towards the Enchanted Forest.\n" +
+                "Exits: south, east.\n" +
+                "Player has 16 life points.");
+
+        helper.runCommand("kirito", "move", "east");
+        helper.assertResult("Well\n" +
+                "You fell into the Well. It is dark and moisty. The\n" +
+                " water level reaches your waist. You tried to clim\n" +
+                "id to the bottom again. It seems that you are trap\n" +
+                "Player has 16 life points.");
     }
 }
