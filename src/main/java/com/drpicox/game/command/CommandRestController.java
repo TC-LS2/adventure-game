@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +20,7 @@ import java.util.Map;
 @RequestMapping("/api/v1/commands")
 public class CommandRestController {
 
+    @Autowired private EntityManager entityManager;
     @Autowired private PlayerController playerController;
     @Autowired private RoomController roomController;
     @Autowired private WorldRestController worldRestController;
@@ -42,7 +45,8 @@ public class CommandRestController {
         var player = getPlayer(request);
         var runner = getRunner(request);
 
-        return runner.run(player, request);
+        var response = runner.run(player, request);
+        return response;
     }
 
     private CommandRunner getRunner(CommandRequest request) {

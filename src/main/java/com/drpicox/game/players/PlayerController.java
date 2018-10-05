@@ -6,6 +6,8 @@ import com.drpicox.game.rooms.RoomController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
+import javax.transaction.Transactional;
+
 @Controller
 public class PlayerController {
 

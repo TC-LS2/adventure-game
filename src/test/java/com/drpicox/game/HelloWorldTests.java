@@ -79,12 +79,14 @@ public class HelloWorldTests {
     public void do_login_and_look_again() throws Exception {
         helper.putWorld(buildWorld());
 
-        helper.runCommand("kirito", "look")
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.player.username", is("kirito")))
-                .andExpect(jsonPath("$.room.name", is("A new world")))
-                .andExpect(jsonPath("$.room.description", containsString("You see in front of your eyes one of the most")))
-                .andExpect(jsonPath("$.room.description", containsString("Eternity Mountains reaching the clouds.")));
+
+        helper.runCommand("kirito", "look");
+        helper.assertResult("A new world\n" +
+                "You see in front of your eyes one of the most beau\n" +
+                "tiful and incredible worlds that you can imagine. \n" +
+                "ith tiny islands, in the east, just far away, you \n" +
+                "the clouds.\n" +
+                "Player has 16 life points.");
     }
 
     @Test

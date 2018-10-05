@@ -38,7 +38,6 @@
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -66,62 +65,6 @@
             </plugin>
         </plugins>
     </build>
-
-<!--
-<build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
-                <configuration>
-                    <source>1.10</source>
-                    <target>1.10</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>com.drpicox.game.Application</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>com.heroku.sdk</groupId>
-                <artifactId>heroku-maven-plugin</artifactId>
-                <version>2.0.4</version>
-                <configuration>
-                    <jdkVersion>10</jdkVersion>
-                    <includes>
-                        <include>build</include>
-                    </includes>
-                    <appName>adventure-game-origin</appName>
-                    <processTypes>
-                        <web>java $JAVA_OPTS -Dspring.server.port=$PORT -cp target/classes:target/dependency/* com.drpicox.game.Application</web>
-                        <web>java -jar ./target/fishingLagoon-1.0.0-jar-with-dependencies.jar</web>
-                    
-                    </processTypes>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
--->
 
     <repositories>
         <repository>

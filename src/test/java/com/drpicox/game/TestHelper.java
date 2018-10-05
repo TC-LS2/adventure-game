@@ -17,10 +17,29 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import com.drpicox.game.rooms.Direction;
+import com.drpicox.game.tools.WorldBuilder;
+import org.hamcrest.Matcher;
+import org.junit.After;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Component
@@ -38,11 +57,16 @@ public class TestHelper {
     @Autowired private RoomRepository roomRepository;
     @Autowired private PlayerRepository playerRepository;
 
+    private ResultActions lastResultActions = null;
+    private List<String> commandsStrings = new ArrayList<>();
+
     public void cleanup() {
+        System.out.println("= cleanup =====================================");
         playerRepository.deleteAll();
         roomRepository.deleteAll();
         monsterRepository.deleteAll();
         itemRepository.deleteAll();
+        commandsStrings.clear();
     }
 
     public String toJson(Object object) {
@@ -85,12 +109,98 @@ public class TestHelper {
         return result;
     }
 
+
+    public void assertResult(String expectedResult) throws Exception {
+        var commandsString = getCommandsString();
+        var resultJson = lastResultActions
+                .andExpect(status().isOk())
+                .andReturn().getResponse().getContentAsString();
+
+        var resultGame = fromJson(resultJson, Map.class);
+        var resultString = gameToString(resultGame);
+
+        assertThat(commandsString + resultString, is(commandsString + expectedResult));
+        System.out.println(resultString);
+    }
+
+    private String getCommandsString() {
+        return String.join("\n", commandsStrings.stream().toArray(String[]::new)) + "\n";
+    }
+
+    private String gameToString(Map game) {
+        var result = new StringBuilder();
+        var player = (Map) game.get("player");
+        var room = (Map) game.get("room");
+
+        result.append(room.get("name")).append("\n");
+        result.append(wrap((String) room.get("description")));
+
+        var exits = (List<Map>) room.get("exits");
+        if (exits != null && !exits.isEmpty()) {
+            result.append("Exits: ")
+                    .append(
+                            String.join(", ", exits.stream().map(exit -> (String) exit.get("name")).toArray(String[]::new))
+                    ).append(".\n");
+        }
+
+        var item = (Map) room.get("item");
+        if (item != null) {
+            result.append("There is the item ").append(item.get("name")).append(".\n");
+        }
+        var monster = (Map) room.get("monster");
+        if (monster != null) {
+            result.append("There is the monster ").append(monster.get("name")).append(".\n");
+        }
+
+        var key = (Map) player.get("key");
+        if (key != null) {
+            result.append("Has the key ").append(key.get("name")).append(".\n");
+        }
+        var shield = (Map) player.get("shield");
+        if (shield != null) {
+            result.append("Has the shield ").append(shield.get("name")).append(".\n");
+        }
+        var weapon = (Map) player.get("weapon");
+        if (weapon != null) {
+            result.append("Has the weapon ").append(weapon.get("name")).append(".\n");
+        }
+
+        result.append("Player has ")
+                .append(player.get("lifePoints"))
+                .append(" life points.");
+
+        return result.toString();
+    }
+
+    private String wrap(String text) {
+        var result = new StringBuilder();
+        var offset = 0;
+
+        while (offset < text.length()) {
+            var endIndex = Math.min(offset + 50, text.length());
+            var chuck = text.substring(offset, endIndex);
+
+            result.append(chuck).append("\n");
+
+            offset += endIndex;
+        }
+
+        return result.toString();
+    }
+
+
     public ResultActions runCommand(String username, String command, String ...arguments) throws Exception {
+        var commandString = "> " + command + " " + String.join(" ", arguments);
+        commandsStrings.add(commandString);
+        System.out.println(commandString);
+
         var request = new CommandRequest(username, command, Arrays.asList(arguments));
 
-        return mockMvc.perform(post("/api/v1/commands")
+        lastResultActions = mockMvc.perform(post("/api/v1/commands")
                 .contentType(contentType)
                 .content(toJson(request)));
+
+        return lastResultActions;
     }
 
     public ResultActions putWorld(WorldBuilder builder) throws Exception {
