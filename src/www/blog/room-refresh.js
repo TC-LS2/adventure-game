@@ -14,7 +14,7 @@ export default {
       "There is a monster here. Just old. Just waiting for you. It has that object that you wish for your whole life.\n" +
       "::::\n",
     monsters: "snail:0 0:wisdom sphere\n",
-    items: "rusty key: key 123\n" + "wisdom sphere: key 875\n",
+    items: "rusty key: key 123\nwisdom sphere: key 875\n",
   },
   map:
     "+------------+      \n" +
