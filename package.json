@@ -8,6 +8,7 @@
     "ducks-reducer": "^1.0.3",
     "emotion": "^9.2.10",
     "kebab-case": "^1.0.0",
+    "prop-types": "^15.6.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-markdown": "^3.6.0",

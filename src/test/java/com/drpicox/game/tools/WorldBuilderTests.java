@@ -3,8 +3,7 @@ package com.drpicox.game.tools;
 import org.junit.Before;
 import org.junit.Test;
 
-import static com.drpicox.game.rooms.Direction.EAST;
-import static com.drpicox.game.rooms.Direction.NORTH;
+import static com.drpicox.game.rooms.Direction.*;
 import static org.junit.Assert.assertEquals;
 
 public class WorldBuilderTests {
@@ -172,5 +171,32 @@ public class WorldBuilderTests {
                 "                        |you cannot leave  |      \n" +
                 "                        |                  |      \n" +
                 "                        +------------------+      \n");
+    }
+
+    @Test
+    public void regression_map_removes_incomunicated_rooms_rows() {
+        builder.name("room1")
+                .exit(EAST, -1)
+                .exit(NORTH, -1)
+
+                .east().name("room2")
+                .exit(WEST, -1)
+
+                .west().north().name("room3")
+                .exit(SOUTH, -1);
+
+        assertMapIs("" +
+                "+-----+                   \n" +
+                "|ROOM3|                   \n" +
+                "|no...|                   \n" +
+                "|     |                   \n" +
+                "+-x---+                   \n" +
+                "                          \n" +
+                "                          \n" +
+                "+-x---+      +-----+      \n" +
+                "|ROOM1|      |ROOM2|      \n" +
+                "|no...x      xno...|      \n" +
+                "|     |      |     |      \n" +
+                "+-----+      +-----+      \n");
     }
 }

@@ -47,7 +47,7 @@ public class Room {
         return monster;
     }
 
-    public void giveItem(Item item) {
+    public void removeItem(Item item) {
         if (this.item == item) this.item = null;
     }
 

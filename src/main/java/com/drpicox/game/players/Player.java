@@ -1,9 +1,6 @@
 package com.drpicox.game.players;
 
-import com.drpicox.game.items.Item;
-import com.drpicox.game.items.Key;
-import com.drpicox.game.items.Shield;
-import com.drpicox.game.items.Weapon;
+import com.drpicox.game.items.*;
 import com.drpicox.game.rooms.Room;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,6 +44,8 @@ public class Player {
         this.lifePoints = MAX_LIFE_POINTS;
         this.room = initialRoom;
         this.key = null;
+        this.weapon = null;
+        this.shield = null;
     }
 
     public int getAttack() {
@@ -83,6 +82,10 @@ public class Player {
         this.lifePoints -= damagePoints;
     }
 
+    public void takeLifePoints(int lifePoints) {
+        this.lifePoints = Math.min(this.lifePoints + lifePoints, MAX_LIFE_POINTS);
+    }
+
     public Item takeItem(Item item) {
         Item dropped = null;
         if (item instanceof Key) {
@@ -94,6 +97,8 @@ public class Player {
         } else if (item instanceof Weapon) {
             dropped = weapon;
             weapon = (Weapon) item;
+        } else if (item instanceof Food) {
+            takeLifePoints(((Food) item).getLifePoints());
         }
         return dropped;
     }

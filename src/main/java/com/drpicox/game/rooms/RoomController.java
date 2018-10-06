@@ -1,6 +1,7 @@
 package com.drpicox.game.rooms;
 
 import com.drpicox.game.items.Item;
+import com.drpicox.game.utils.TimerTaskRunner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -9,6 +10,7 @@ public class RoomController {
 
     @Autowired private RoomParser roomParser;
     @Autowired private RoomRepository roomRepository;
+    @Autowired private TimerTaskRunner timerTaskRunner;
 
     public Room getDestinationRoom(Room room, Direction direction) {
         var target = room.getCoordinates().move(direction);
@@ -19,11 +21,6 @@ public class RoomController {
         var origin = new RoomCoordinates(0, 0);
         var room = roomRepository.findById(origin).orElse(null);
         return room;
-    }
-
-    public void giveItem(Room room, Item item) {
-        room.giveItem(item);
-        roomRepository.save(room);
     }
 
     public void killMonster(Room room) {
@@ -38,6 +35,12 @@ public class RoomController {
 
     public void receiveItem(Room room, Item item) {
         room.receiveItem(item);
+        roomRepository.save(room);
+    }
+
+    public void removeItem(Room room, Item item) {
+        timerTaskRunner.run(null);
+        room.removeItem(item);
         roomRepository.save(room);
     }
 

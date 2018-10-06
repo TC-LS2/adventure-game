@@ -46,11 +46,15 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Component
 public class TestHelper {
 
+    private boolean suspendAssert = false;
+
+
     public final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
             MediaType.APPLICATION_JSON.getSubtype(),
             Charset.forName("utf8"));
 
     private final ObjectMapper mapper = new ObjectMapper();
+    private GameResultStringifier gameResultStringifier = new GameResultStringifier();
 
     private MockMvc mockMvc;
     private ItemRepository itemRepository;
@@ -70,7 +74,8 @@ public class TestHelper {
     private List<String> commandsStrings = new ArrayList<>();
 
     public void cleanup() {
-        System.out.println("= cleanup =====================================");
+        if (suspendAssert) System.out.println("! alerts suspended !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        else System.out.println("> █\n= cleanup =====================================");
         playerRepository.deleteAll();
         roomRepository.deleteAll();
         monsterRepository.deleteAll();
@@ -128,7 +133,8 @@ public class TestHelper {
         var resultGame = fromJson(resultJson, Map.class);
         var resultString = gameToString(resultGame);
 
-        assertThat(commandsString + resultString, is(commandsString + expectedResult));
+        if (!suspendAssert)
+            assertThat(commandsString + resultString, is(commandsString + expectedResult));
         System.out.println(resultString);
     }
 
@@ -137,7 +143,7 @@ public class TestHelper {
     }
 
     private String gameToString(Map game) {
-        return new GameResultStringifier().toString(game);
+        return gameResultStringifier.toString(game);
     }
 
 

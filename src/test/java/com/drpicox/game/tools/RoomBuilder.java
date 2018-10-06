@@ -90,15 +90,6 @@ public class RoomBuilder {
     }
 
     public void drawExit(Direction direction, DrawableMap drawableMap, int width) {
-        int x = 0, y = 0, l = 0;
-        switch (direction) {
-            case NORTH: x = width / 2; y = -1; l = EXIT_HEIGHT; break;
-            case SOUTH: x = width / 2; y = 5; l = EXIT_HEIGHT; break;
-            case EAST: x = width + 2; y = 2; l = EXIT_WIDTH; break;
-            case WEST: x = -1; y = 2; l = EXIT_WIDTH; break;
-        }
-        drawableMap.drawLine(x, y, l, direction);
-
         var exit = exits.get(direction);
         char ch = 'o';
         if (exit < 0) {
@@ -106,6 +97,16 @@ public class RoomBuilder {
         } if (exit > 0) {
             ch = '▒';
         }
+
+        int x = 0, y = 0, l = 0;
+        switch (direction) {
+            case NORTH: x = width / 2; y = -1; l = EXIT_HEIGHT; break;
+            case SOUTH: x = width / 2; y = 5; l = EXIT_HEIGHT; break;
+            case EAST: x = width + 2; y = 2; l = EXIT_WIDTH; break;
+            case WEST: x = -1; y = 2; l = EXIT_WIDTH; break;
+        }
+
+        if (exit >= 0) drawableMap.drawLine(x, y, l, direction);
         drawableMap.draw(x - direction.getDj(), y + direction.getDi(), ch);
     }
 

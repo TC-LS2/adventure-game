@@ -23,7 +23,7 @@ public class GetCommandRunner implements CommandRunner {
         if (item == null) throw new IllegalCommandException("no-item", "There is no item in this room.");
 
         var droppedItem = playerController.takeItem(player, item);
-        roomController.giveItem(room, item);
+        roomController.removeItem(room, item);
         roomController.receiveItem(room, droppedItem);
 
         return lookCommandRunner.run(player, request);

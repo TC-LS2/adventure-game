@@ -38,6 +38,9 @@ public class ItemParser {
             case "weapon":
                 item = new Weapon(name, attribute);
                 break;
+            case "food":
+                item = new Food(name, attribute);
+                break;
             default:
                 throw new RuntimeException("Unknown item type '" + type + "'");
         }

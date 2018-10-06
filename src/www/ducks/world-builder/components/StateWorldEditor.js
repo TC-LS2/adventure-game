@@ -6,6 +6,7 @@ import WorldEditor from "./WorldEditor"
 
 const StateWorldEditor = connect(
   state => ({ world: getWorld(state) }),
+
   dispatch => ({
     onChange: world => dispatch(setWorld(world)),
     onSave: world => dispatch(putWorld(world)),
