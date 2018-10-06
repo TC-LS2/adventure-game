@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -cp target/classes:target/dependency/* com.drpicox.game.Application
+web: java -Dserver.port=$PORT -cp deploy/target/classes:deploy/target/dependency/* com.drpicox.game.Application

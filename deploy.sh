@@ -21,6 +21,11 @@ yarn build  || fail "yarn build"
 mvn compile  || fail "mvn compile"
 mvn dependency:copy-dependencies  || fail "mvn dependency:copy-dependencies"
 
+# Prepare deploy folder
+rm -fr ./deploy
+mv ./build ./deploy
+mv ./target ./deploy
+
 # Commit and deploy
 git add --all || fail "git add --all"
 git commit -m "DEPLOY v$(cat package.json | grep version | cut -d '"' -f 4) $(date "+DATE: %Y-%m-%d / TIME: %H:%M:%S")" || fail "git commit"

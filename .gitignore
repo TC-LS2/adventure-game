@@ -14,6 +14,9 @@ README.html
 *.iml
 .idea
 
+/build
+/target
+
 # dependencies
 /node_modules
 
