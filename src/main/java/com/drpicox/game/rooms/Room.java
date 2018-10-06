@@ -19,6 +19,8 @@ public class Room {
     @ElementCollection private List<Exit> exits;
     @ManyToOne private Item item;
     @ManyToOne private Monster monster;
+    @ManyToOne private Item initialItem;
+    @ManyToOne private Monster initialMonster;
     @Lob private String description;
 
     public Room(RoomCoordinates coordinates, String name, List<Exit> exits, Item item, Monster monster, String description) {
@@ -27,6 +29,8 @@ public class Room {
         this.exits = exits;
         this.item = item;
         this.monster = monster;
+        this.initialItem = item;
+        this.initialMonster = monster;
         this.description = description;
     }
 
@@ -62,6 +66,15 @@ public class Room {
 
     public void receiveItem(Item droppedItem) {
         this.item = droppedItem;
+    }
+
+    public void refresh() {
+        this.item = this.initialItem;
+        this.monster = this.initialMonster;
+
+        for (Exit exit : exits) {
+            exit.refresh();
+        }
     }
 
     @JsonValue

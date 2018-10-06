@@ -40,7 +40,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class KeysAndDoorsTests {
 
-    @Autowired private MockMvc mockMvc;
     @Autowired private TestHelper helper;
 
     @Before @After

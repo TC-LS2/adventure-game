@@ -14,11 +14,13 @@ public class Exit implements Serializable {
     private Direction direction;
     private int code;
     private boolean open;
+    private boolean initialOpen;
 
     public Exit(Direction direction, int code, boolean open) {
         this.direction = direction;
         this.code = code;
         this.open = open;
+        this.initialOpen = open;
     }
 
     @JsonValue
@@ -49,5 +51,9 @@ public class Exit implements Serializable {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public void refresh() {
+        this.open = this.initialOpen;
     }
 }

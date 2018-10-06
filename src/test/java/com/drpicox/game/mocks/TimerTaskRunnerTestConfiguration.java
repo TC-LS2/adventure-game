@@ -1,4 +1,4 @@
-package com.drpicox.game;
+package com.drpicox.game.mocks;
 
 import com.drpicox.game.utils.TimerTaskRunner;
 import org.springframework.context.annotation.Bean;
@@ -10,14 +10,15 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class TimerTaskRunnerTestConfiguration {
 
+    private TimerTaskRunnerMock timerTaskRunnerMock;
+
+    public TimerTaskRunnerTestConfiguration(TimerTaskRunnerMock timerTaskRunnerMock) {
+        this.timerTaskRunnerMock = timerTaskRunnerMock;
+    }
+
     @Bean
     @Primary
     public TimerTaskRunner timerTaskRunner() {
-        return new TimerTaskRunner() {
-            @Override
-            public void run(Runnable task) {
-                System.out.println("TimerTaskRunner =+=+=+=+=+=+=+=+=+=+=+=+=========== OVERRIDE");
-            }
-        };
+        return timerTaskRunnerMock;
     }
 }
