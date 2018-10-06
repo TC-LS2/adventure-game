@@ -9,8 +9,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class MonsterParser {
 
-    @Autowired private MonsterRepository monsterRepository;
-    @Autowired private ItemController itemController;
+    private MonsterRepository monsterRepository;
+    private ItemController itemController;
+
+    public MonsterParser(MonsterRepository monsterRepository, ItemController itemController) {
+        this.monsterRepository = monsterRepository;
+        this.itemController = itemController;
+    }
 
     public void read(String monsters) {
         var parser = new Parser(monsters);

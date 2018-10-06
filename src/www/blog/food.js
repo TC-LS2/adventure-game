@@ -12,7 +12,7 @@ export default {
       "0 1:Kitchen:-1 -1 -1 0:best cake ever\n" +
       "That is the kitchen. That is the place where you prepare your most delicious dishes. What is that that smells so good?\n" +
       "::::\n",
-    items: "mosquito leg: food 2\n" + "best cake ever: food 16\n",
+    items: "mosquito leg: food 2\nbest cake ever: food 16\n",
     monsters: "mosquito:2 0:mosquito leg\n",
   },
   map:

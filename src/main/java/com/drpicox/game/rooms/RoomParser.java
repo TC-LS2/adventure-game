@@ -16,9 +16,15 @@ import static com.drpicox.game.rooms.Direction.*;
 @Component
 public class RoomParser {
 
-    @Autowired private RoomRepository roomRepository;
-    @Autowired private ItemController itemController;
-    @Autowired private MonsterController monsterController;
+    private RoomRepository roomRepository;
+    private ItemController itemController;
+    private MonsterController monsterController;
+
+    public RoomParser(RoomRepository roomRepository, ItemController itemController, MonsterController monsterController) {
+        this.roomRepository = roomRepository;
+        this.itemController = itemController;
+        this.monsterController = monsterController;
+    }
 
     public void read(String rooms) {
         var parser = new Parser(rooms);

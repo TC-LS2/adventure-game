@@ -7,7 +7,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class ItemParser {
 
-    @Autowired private ItemRepository itemRepository;
+    private ItemRepository itemRepository;
+
+    public ItemParser(ItemRepository itemRepository) {
+        this.itemRepository = itemRepository;
+    }
 
     public void read(String items) {
         var parser = new Parser(items);

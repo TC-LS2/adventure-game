@@ -14,9 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/world")
 public class WorldRestController {
 
-    @Autowired private ItemController itemController;
-    @Autowired private RoomController roomController;
-    @Autowired private MonsterController monsterController;
+    private ItemController itemController;
+    private RoomController roomController;
+    private MonsterController monsterController;
+
+    public WorldRestController(ItemController itemController, RoomController roomController, MonsterController monsterController) {
+        this.itemController = itemController;
+        this.roomController = roomController;
+        this.monsterController = monsterController;
+    }
 
     @PutMapping
     public SuccessResponse replace(@RequestBody World world) {

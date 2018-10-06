@@ -6,8 +6,13 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class MonsterController {
 
-    @Autowired private MonsterParser monsterParser;
-    @Autowired private MonsterRepository monsterRepository;
+    private MonsterParser monsterParser;
+    private MonsterRepository monsterRepository;
+
+    public MonsterController(MonsterParser monsterParser, MonsterRepository monsterRepository) {
+        this.monsterParser = monsterParser;
+        this.monsterRepository = monsterRepository;
+    }
 
     public Monster get(String monsterName) {
         return monsterRepository.findById(monsterName).orElse(null);

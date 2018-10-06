@@ -6,8 +6,13 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class ItemController {
 
-    @Autowired private ItemParser itemParser;
-    @Autowired private ItemRepository itemRepository;
+    private ItemParser itemParser;
+    private ItemRepository itemRepository;
+
+    public ItemController(ItemParser itemParser, ItemRepository itemRepository) {
+        this.itemParser = itemParser;
+        this.itemRepository = itemRepository;
+    }
 
     public Item get(String itemName) {
         return itemRepository.findById(itemName).orElse(null);

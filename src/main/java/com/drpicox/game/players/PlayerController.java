@@ -11,8 +11,13 @@ import javax.transaction.Transactional;
 @Controller
 public class PlayerController {
 
-    @Autowired private PlayerRepository playerRepository;
-    @Autowired private RoomController roomController;
+    private PlayerRepository playerRepository;
+    private RoomController roomController;
+
+    public PlayerController(PlayerRepository playerRepository, RoomController roomController) {
+        this.playerRepository = playerRepository;
+        this.roomController = roomController;
+    }
 
     public Player createPlayer(String username, Room initialRoom) {
         var player = new Player(username, initialRoom, Player.MAX_LIFE_POINTS, null);

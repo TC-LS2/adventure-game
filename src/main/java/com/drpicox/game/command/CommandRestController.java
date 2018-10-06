@@ -20,44 +20,23 @@ import java.util.Map;
 @RequestMapping("/api/v1/commands")
 public class CommandRestController {
 
-    @Autowired private EntityManager entityManager;
-    @Autowired private PlayerController playerController;
-    @Autowired private RoomController roomController;
-    @Autowired private WorldRestController worldRestController;
+    private PlayerController playerController;
+    private RoomController roomController;
+    private WorldRestController worldRestController;
+    private DefaultCommandRunner defaultCommandRunner;
 
-    private Map<String, CommandRunner> commandRunners = new HashMap<>();
-
-    @Autowired
-    public void setup(
-            AttackCommandRunner attackCommandRunner,
-            GetCommandRunner getCommandRunner,
-            LookCommandRunner lookCommandRunner,
-            MoveCommandRunner moveCommandRunner
-    ) {
-        commandRunners.put("attack", attackCommandRunner);
-        commandRunners.put("get", getCommandRunner);
-        commandRunners.put("look", lookCommandRunner);
-        commandRunners.put("move", moveCommandRunner);
+    public CommandRestController(PlayerController playerController, RoomController roomController, WorldRestController worldRestController, DefaultCommandRunner defaultCommandRunner) {
+        this.playerController = playerController;
+        this.roomController = roomController;
+        this.worldRestController = worldRestController;
+        this.defaultCommandRunner = defaultCommandRunner;
     }
 
     @PostMapping()
     public CommandResponse run(@RequestBody CommandRequest request) {
         var player = getPlayer(request);
-        var runner = getRunner(request);
 
-        var response = runner.run(player, request);
-        return response;
-    }
-
-    private CommandRunner getRunner(CommandRequest request) {
-        var command = request.getCommand();
-        var runner = commandRunners.get(command);
-
-        if (runner == null) {
-            throw new IllegalCommandException("unknown-command", "Command '" + command + "' unkown");
-        }
-
-        return runner;
+        return defaultCommandRunner.run(player, request);
     }
 
     private Room getInitialRoom() {

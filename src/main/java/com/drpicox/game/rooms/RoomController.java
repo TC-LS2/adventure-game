@@ -8,9 +8,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class RoomController {
 
-    @Autowired private RoomParser roomParser;
-    @Autowired private RoomRepository roomRepository;
-    @Autowired private TimerTaskRunner timerTaskRunner;
+    private RoomParser roomParser;
+    private RoomRepository roomRepository;
+    private TimerTaskRunner timerTaskRunner;
+
+    public RoomController(RoomParser roomParser, RoomRepository roomRepository, TimerTaskRunner timerTaskRunner) {
+        this.roomParser = roomParser;
+        this.roomRepository = roomRepository;
+        this.timerTaskRunner = timerTaskRunner;
+    }
 
     public Room getDestinationRoom(Room room, Direction direction) {
         var target = room.getCoordinates().move(direction);
