@@ -4,6 +4,7 @@ import { css } from "emotion"
 
 import wrapperClassName from "../common/styles/wrapperClassName"
 import StateAlert from "../ducks/alert/components/StateAlert"
+import packageJson from "../../../package.json"
 
 const headerClassName = css`
   background: green;
@@ -25,6 +26,16 @@ const NavLink = props => <Link className={navLinkClassName} {...props} />
 const BasicLayout = ({ children, breadCrumb, footer }) => (
   <div>
     <div className={headerClassName}>
+      <div
+        style={{
+          marginTop: "-1.41em",
+          textAlign: "right",
+        }}
+      >
+        <small>
+          {packageJson.name} <em>v{packageJson.version}</em>
+        </small>
+      </div>
       <div className={wrapperClassName}>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/game">Game</NavLink>

@@ -32,6 +32,8 @@ const gameMiddleware = ({ dispatch, getState }) => next => async action => {
         const game = getGame(getState())
         dispatch(postCommand(game.player.username, "look"))
       }, REFRESH_TIMEOUT_MILLISECONDS)
+
+      break
     }
 
     default: // nothing

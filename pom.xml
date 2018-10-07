@@ -5,7 +5,7 @@
 
     <groupId>org.springframework</groupId>
     <artifactId>adventure-game-origin</artifactId>
-    <version>0.2.0</version>
+    <version>1.0.0</version>
 
     <name>Adventure Game</name>
     <description>Ultimate text Game engine</description>
