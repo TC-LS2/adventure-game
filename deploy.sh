@@ -23,6 +23,7 @@ mvn dependency:copy-dependencies  || fail "mvn dependency:copy-dependencies"
 
 # Prepare deploy folder
 rm -fr ./deploy
+mkdir ./deploy
 mv ./build ./deploy
 mv ./target ./deploy
 
