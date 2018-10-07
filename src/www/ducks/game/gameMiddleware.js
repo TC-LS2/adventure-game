@@ -16,9 +16,6 @@ const gameMiddleware = ({ dispatch }) => next => async action => {
       } catch (response) {
         if (response.data && response.data.message) {
           dispatch(setAlert(response.data.message))
-        } else if (response && response.message) {
-          dispatch(setAlert("Error: " + response.message))
-          console.error(response)
         }
       }
 

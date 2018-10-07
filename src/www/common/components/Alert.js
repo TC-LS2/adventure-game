@@ -15,6 +15,7 @@ const closeClassName = css`
 const Alert = ({ children, onDismiss, className }) =>
   children && (
     <div className={`${buttonClassName} ${className}`}>
+      LAla
       {children}
       {onDismiss && (
         <span>
