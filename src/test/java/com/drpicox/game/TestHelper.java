@@ -47,7 +47,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Component
 public class TestHelper {
 
+    /* change it to true temporaly to generate snapshots */
     private boolean suspendAssert = false;
+
+    /* change it in @Before of tests that require a different snapshot shape (add a set) */
+    private GameResultStringifier gameResultStringifier = new GameResultStringifier();
 
 
     public final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -55,7 +59,6 @@ public class TestHelper {
             Charset.forName("utf8"));
 
     private final ObjectMapper mapper = new ObjectMapper();
-    private GameResultStringifier gameResultStringifier = new GameResultStringifier();
     private ResultActions lastResultActions = null;
     private List<String> commandsStrings = new ArrayList<>();
 
@@ -179,4 +182,7 @@ public class TestHelper {
                 .andExpect(status().isOk());
     }
 
+    public boolean isSuspendAssert() {
+        return suspendAssert;
+    }
 }
