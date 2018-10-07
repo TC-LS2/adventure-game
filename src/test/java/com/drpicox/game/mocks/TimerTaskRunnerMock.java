@@ -23,4 +23,8 @@ public class TimerTaskRunnerMock extends TimerTaskRunner {
         }
         tasks.clear();
     }
+
+    public void clear() {
+        tasks.clear();
+    }
 }

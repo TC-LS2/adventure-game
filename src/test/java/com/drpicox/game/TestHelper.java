@@ -2,6 +2,7 @@ package com.drpicox.game;
 
 import com.drpicox.game.command.CommandRequest;
 import com.drpicox.game.items.ItemRepository;
+import com.drpicox.game.mocks.TimerTaskRunnerMock;
 import com.drpicox.game.monsters.MonsterRepository;
 import com.drpicox.game.players.PlayerRepository;
 import com.drpicox.game.rooms.RoomRepository;
@@ -55,23 +56,24 @@ public class TestHelper {
 
     private final ObjectMapper mapper = new ObjectMapper();
     private GameResultStringifier gameResultStringifier = new GameResultStringifier();
+    private ResultActions lastResultActions = null;
+    private List<String> commandsStrings = new ArrayList<>();
 
     private MockMvc mockMvc;
     private ItemRepository itemRepository;
     private MonsterRepository monsterRepository;
     private RoomRepository roomRepository;
     private PlayerRepository playerRepository;
+    private TimerTaskRunnerMock timerTaskRunnerMock;
 
-    public TestHelper(MockMvc mockMvc, ItemRepository itemRepository, MonsterRepository monsterRepository, RoomRepository roomRepository, PlayerRepository playerRepository) {
+    public TestHelper(MockMvc mockMvc, ItemRepository itemRepository, MonsterRepository monsterRepository, RoomRepository roomRepository, PlayerRepository playerRepository, TimerTaskRunnerMock timerTaskRunnerMock) {
         this.mockMvc = mockMvc;
         this.itemRepository = itemRepository;
         this.monsterRepository = monsterRepository;
         this.roomRepository = roomRepository;
         this.playerRepository = playerRepository;
+        this.timerTaskRunnerMock = timerTaskRunnerMock;
     }
-
-    private ResultActions lastResultActions = null;
-    private List<String> commandsStrings = new ArrayList<>();
 
     public void cleanup() {
         if (suspendAssert) System.out.println("! alerts suspended !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
@@ -81,6 +83,7 @@ public class TestHelper {
         monsterRepository.deleteAll();
         itemRepository.deleteAll();
         commandsStrings.clear();
+        timerTaskRunnerMock.clear();
     }
 
     public String toJson(Object object) {
