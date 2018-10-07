@@ -4,10 +4,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>adventure-game-origin</artifactId>
+    <artifactId>adventure-game-athens</artifactId>
     <version>1.0.0</version>
 
-    <name>Adventure Game</name>
+    <name>Adventure Game Athens</name>
     <description>Ultimate text Game engine</description>
 
     <parent>
