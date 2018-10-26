@@ -27,7 +27,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -40,12 +39,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 public class MonstersTests {
 
-    @Autowired private TestHelper helper;
+    @Autowired
+    private TestHelper helper;
 
     @Before
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+
+        var mustacheStringifier = new MustacheGameStringifier();
+        decorateMustache(mustacheStringifier);
+        helper.setGameResultStringifier(mustacheStringifier);
     }
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
@@ -152,16 +156,16 @@ public class MonstersTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("Home sweet home\n" +
-                "You are in the main room of your home. There is pl\n" +
-                "enty of light and space.\n" +
-                "Exits: south (closed), west.\n" +
+                "You are in the main room of your home. There is\n" +
+                "plenty of light and space.\n" +
                 "There is the fly monster.\n" +
+                "Exits: south (closed), west.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "attack");
         helper.assertResult("Home sweet home\n" +
-                "You are in the main room of your home. There is pl\n" +
-                "enty of light and space.\n" +
+                "You are in the main room of your home. There is\n" +
+                "plenty of light and space.\n" +
                 "Exits: south (closed), west.\n" +
                 "Player has 16 life points.");
     }
@@ -173,16 +177,16 @@ public class MonstersTests {
         helper.runCommand("kirito", "attack");
         helper.runCommand("kirito", "move", "west");
         helper.assertResult("Sweet bedroom\n" +
-                "That is your bedrooom, possibly the most cosy plac\n" +
-                "e of all of your home. Did you listen that?\n" +
-                "Exits: south, east.\n" +
+                "That is your bedrooom, possibly the most cosy\n" +
+                "place of all of your home. Did you listen that?\n" +
                 "There is the mosquito monster.\n" +
+                "Exits: south, east.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "attack");
         helper.assertResult("Sweet bedroom\n" +
-                "That is your bedrooom, possibly the most cosy plac\n" +
-                "e of all of your home. Did you listen that?\n" +
+                "That is your bedrooom, possibly the most cosy\n" +
+                "place of all of your home. Did you listen that?\n" +
                 "Exits: south, east.\n" +
                 "Player has 14 life points.");
     }
@@ -196,24 +200,27 @@ public class MonstersTests {
         helper.runCommand("kirito", "attack");
         helper.runCommand("kirito", "move", "south");
         helper.assertResult("Bathroom\n" +
-                "That was the bathroom of your dreams, nice light, \n" +
-                "clean, incredible bathroom... is someone knoking t\n" +
-                "Exits: north.\n" +
+                "That was the bathroom of your dreams, nice light,\n" +
+                "clean, incredible bathroom... is someone knoking\n" +
+                "to the door?\n" +
                 "There is the big mosquito monster.\n" +
+                "Exits: north.\n" +
                 "Player has 14 life points.");
 
         helper.runCommand("kirito", "attack");
         helper.assertResult("Bathroom\n" +
-                "That was the bathroom of your dreams, nice light, \n" +
-                "clean, incredible bathroom... is someone knoking t\n" +
-                "Exits: north.\n" +
+                "That was the bathroom of your dreams, nice light,\n" +
+                "clean, incredible bathroom... is someone knoking\n" +
+                "to the door?\n" +
                 "There is the main house key key.\n" +
+                "Exits: north.\n" +
                 "Player has 11 life points.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Bathroom\n" +
-                "That was the bathroom of your dreams, nice light, \n" +
-                "clean, incredible bathroom... is someone knoking t\n" +
+                "That was the bathroom of your dreams, nice light,\n" +
+                "clean, incredible bathroom... is someone knoking\n" +
+                "to the door?\n" +
                 "Exits: north.\n" +
                 "Player has the main house key key.\n" +
                 "Player has 11 life points.");
@@ -231,42 +238,46 @@ public class MonstersTests {
         helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("Sweet bedroom\n" +
-                "That is your bedrooom, possibly the most cosy plac\n" +
-                "e of all of your home. Did you listen that?\n" +
+                "That is your bedrooom, possibly the most cosy\n" +
+                "place of all of your home. Did you listen that?\n" +
                 "Exits: south, east.\n" +
                 "Player has the main house key key.\n" +
                 "Player has 11 life points.");
 
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Home sweet home\n" +
-                "You are in the main room of your home. There is pl\n" +
-                "enty of light and space.\n" +
+                "You are in the main room of your home. There is\n" +
+                "plenty of light and space.\n" +
                 "Exits: south (closed), west.\n" +
                 "Player has the main house key key.\n" +
                 "Player has 11 life points.");
 
         helper.runCommand("kirito", "move", "south");
         helper.assertResult("Cabin\n" +
-                "You are in front of your cabin, main door is close\n" +
-                "d. You remember that you have the key under the ca\n" +
-                " having big treasures. It seems very hard.\n" +
-                "Exits: north, south.\n" +
+                "You are in front of your cabin, main door is\n" +
+                "closed. You remember that you have the key under\n" +
+                "the carpet. There is a Goron here. Gorons are\n" +
+                "famous for having big treasures. It seems very\n" +
+                "hard.\n" +
                 "There is the Goron monster.\n" +
+                "Exits: north, south.\n" +
                 "Player has 11 life points.");
 
         helper.runCommand("kirito", "attack");
         helper.assertResult("Cabin\n" +
-                "You are in front of your cabin, main door is close\n" +
-                "d. You remember that you have the key under the ca\n" +
-                " having big treasures. It seems very hard.\n" +
-                "Exits: north, south.\n" +
+                "You are in front of your cabin, main door is\n" +
+                "closed. You remember that you have the key under\n" +
+                "the carpet. There is a Goron here. Gorons are\n" +
+                "famous for having big treasures. It seems very\n" +
+                "hard.\n" +
                 "There is the Goron monster.\n" +
+                "Exits: north, south.\n" +
                 "Player has 3 life points.");
     }
 
 
     @Test
-    public void oh_oh_you_avatar_may_die() throws Exception {
+    public void oh_oh_your_avatar_may_die() throws Exception {
         helper.putWorld(buildWorld());
 
         helper.runCommand("kirito", "attack");
@@ -282,8 +293,8 @@ public class MonstersTests {
         helper.runCommand("kirito", "move", "south");
         helper.assertResult("World's End\n" +
                 "Cthulhu is here...\n" +
-                "Exits: north.\n" +
                 "There is the Cthulhu monster.\n" +
+                "Exits: north.\n" +
                 "Player has 3 life points.");
 
         helper.runCommand("kirito", "attack")
@@ -309,8 +320,8 @@ public class MonstersTests {
         helper.runCommand("kirito", "attack");
         helper.runCommand("kirito", "look");
         helper.assertResult("Home sweet home\n" +
-                "You are in the main room of your home. There is pl\n" +
-                "enty of light and space.\n" +
+                "You are in the main room of your home. There is\n" +
+                "plenty of light and space.\n" +
                 "Exits: south, west.\n" +
                 "Player has 16 life points.");
     }

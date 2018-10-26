@@ -46,6 +46,10 @@ public class KeysAndDoorsTests {
     @Before @After
     public void cleanup() throws Exception {
         helper.cleanup();
+
+        var mustacheStringifier = new MustacheGameStringifier();
+        decorateMustache(mustacheStringifier);
+        helper.setGameResultStringifier(mustacheStringifier);
     }
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
@@ -159,11 +163,11 @@ public class KeysAndDoorsTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("Home sweet home\n" +
-                "You are in front of your home, main door is closed\n" +
-                ". You remember that you have the key under the car\n" +
-                "Exits: north (closed), west (closed).\n" +
+                "You are in front of your home, main door is\n" +
+                "closed. You remember that you have the key under\n" +
+                "the carpet.\n" +
                 "There is the key key.\n" +
-                "Player has 16 life points.");
+                "Exits: north (closed), west (closed).");
 
         helper.runCommand("kirito", "move", "north")
                 .andExpect(status().isBadRequest())
@@ -176,18 +180,17 @@ public class KeysAndDoorsTests {
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Home sweet home\n" +
-                "You are in front of your home, main door is closed\n" +
-                ". You remember that you have the key under the car\n" +
+                "You are in front of your home, main door is\n" +
+                "closed. You remember that you have the key under\n" +
+                "the carpet.\n" +
                 "Exits: north (closed), west (closed).\n" +
-                "Player has the key key.\n" +
-                "Player has 16 life points.");
+                "Player has the key key.");
 
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("Home sweet home\n" +
-                "You are in the main room of your home. There is pl\n" +
-                "enty of light and space.\n" +
-                "Exits: north, south, east.\n" +
-                "Player has 16 life points.");
+                "You are in the main room of your home. There is\n" +
+                "plenty of light and space.\n" +
+                "Exits: north, south, east.");
     }
 
     @Test
@@ -198,10 +201,10 @@ public class KeysAndDoorsTests {
         helper.runCommand("kirito", "move", "north");
         helper.runCommand("kirito", "move", "south");
         helper.assertResult("Home sweet home\n" +
-                "You are in front of your home, main door is closed\n" +
-                ". You remember that you have the key under the car\n" +
-                "Exits: north, west (closed).\n" +
-                "Player has 16 life points.");
+                "You are in front of your home, main door is\n" +
+                "closed. You remember that you have the key under\n" +
+                "the carpet.\n" +
+                "Exits: north, west (closed).");
     }
 
     @Test
@@ -223,35 +226,31 @@ public class KeysAndDoorsTests {
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("Key Locker\n" +
                 "Here you have some useful keys\n" +
-                "Exits: south.\n" +
                 "There is the rust key key.\n" +
-                "Player has 16 life points.");
+                "Exits: south.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Key Locker\n" +
                 "Here you have some useful keys\n" +
                 "Exits: south.\n" +
-                "Player has the rust key key.\n" +
-                "Player has 16 life points.");
+                "Player has the rust key key.");
 
         helper.runCommand("kirito", "move", "south");
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Kitchen\n" +
-                "That it is a great kitchen. There is a cupboard in\n" +
-                " the south.\n" +
-                "Exits: east (closed), west.\n" +
+                "That it is a great kitchen. There is a cupboard\n" +
+                "in the south.\n" +
                 "There is the small key key.\n" +
-                "Player has the rust key key.\n" +
-                "Player has 16 life points.");
+                "Exits: east (closed), west.\n" +
+                "Player has the rust key key.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Kitchen\n" +
-                "That it is a great kitchen. There is a cupboard in\n" +
-                " the south.\n" +
-                "Exits: east (closed), west.\n" +
+                "That it is a great kitchen. There is a cupboard\n" +
+                "in the south.\n" +
                 "There is the rust key key.\n" +
-                "Player has the small key key.\n" +
-                "Player has 16 life points.");
+                "Exits: east (closed), west.\n" +
+                "Player has the small key key.");
     }
 
     @Test

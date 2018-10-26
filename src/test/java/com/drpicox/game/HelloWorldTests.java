@@ -46,6 +46,10 @@ public class HelloWorldTests {
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+
+        var mustacheStringifier = new MustacheGameStringifier();
+        decorateMustache(mustacheStringifier);
+        helper.setGameResultStringifier(mustacheStringifier);
     }
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
@@ -94,11 +98,14 @@ public class HelloWorldTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("A new world\n" +
-                "You see in front of your eyes one of the most beau\n" +
-                "tiful and incredible worlds that you can imagine. \n" +
-                "ith tiny islands, in the east, just far away, you \n" +
-                "the clouds.\n" +
-                "Player has 16 life points.");
+                "You see in front of your eyes one of the most\n" +
+                "beautiful and incredible worlds that you can\n" +
+                "imagine. Towards the south, you can see a big sea\n" +
+                "spotted with tiny islands, in the east, just far\n" +
+                "away, you can see the City of the East, with big\n" +
+                "spikes pointing to the sky, and in the west,\n" +
+                "there is the Enchanted Forest and the Eternity\n" +
+                "Mountains reaching the clouds.");
     }
 
     @Test

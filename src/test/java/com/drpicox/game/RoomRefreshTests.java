@@ -45,6 +45,10 @@ public class RoomRefreshTests {
     @Before @After
     public void cleanup() throws Exception {
         helper.cleanup();
+
+        var mustacheStringifier = new MustacheGameStringifier();
+        decorateMustache(mustacheStringifier);
+        helper.setGameResultStringifier(mustacheStringifier);
     }
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
@@ -105,18 +109,24 @@ public class RoomRefreshTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("High castle\n" +
-                "You are in the highest tower of a castle in the hi\n" +
-                "ghest mountain. You can listen to the airflow betw\n" +
-                " but yet, there is a key, and there is a closed do\n" +
-                "Exits: north (closed).\n" +
+                "You are in the highest tower of a castle in the\n" +
+                "highest mountain. You can listen to the airflow\n" +
+                "between your ears. It seems that there is nobody\n" +
+                "here, but yet, there is a key, and there is a\n" +
+                "closed door that brings to the highest room of\n" +
+                "this castle.\n" +
                 "There is the rusty key key.\n" +
+                "Exits: north (closed).\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("High castle\n" +
-                "You are in the highest tower of a castle in the hi\n" +
-                "ghest mountain. You can listen to the airflow betw\n" +
-                " but yet, there is a key, and there is a closed do\n" +
+                "You are in the highest tower of a castle in the\n" +
+                "highest mountain. You can listen to the airflow\n" +
+                "between your ears. It seems that there is nobody\n" +
+                "here, but yet, there is a key, and there is a\n" +
+                "closed door that brings to the highest room of\n" +
+                "this castle.\n" +
                 "Exits: north (closed).\n" +
                 "Player has the rusty key key.\n" +
                 "Player has 16 life points.");
@@ -125,11 +135,14 @@ public class RoomRefreshTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("High castle\n" +
-                "You are in the highest tower of a castle in the hi\n" +
-                "ghest mountain. You can listen to the airflow betw\n" +
-                " but yet, there is a key, and there is a closed do\n" +
-                "Exits: north (closed).\n" +
+                "You are in the highest tower of a castle in the\n" +
+                "highest mountain. You can listen to the airflow\n" +
+                "between your ears. It seems that there is nobody\n" +
+                "here, but yet, there is a key, and there is a\n" +
+                "closed door that brings to the highest room of\n" +
+                "this castle.\n" +
                 "There is the rusty key key.\n" +
+                "Exits: north (closed).\n" +
                 "Player has the rusty key key.\n" +
                 "Player has 16 life points.");
     }
@@ -142,18 +155,21 @@ public class RoomRefreshTests {
         helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("Highest room\n" +
-                "There is a monster here. Just old. Just waiting fo\n" +
-                "r you. It has that object that you wish for your w\n" +
-                "Exits: south.\n" +
+                "There is a monster here. Just old. Just waiting\n" +
+                "for you. It has that object that you wish for\n" +
+                "your whole life.\n" +
                 "There is the snail monster.\n" +
+                "Exits: south.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "move", "south");
-        helper.assertResult("" +
-                "High castle\n" +
-                "You are in the highest tower of a castle in the hi\n" +
-                "ghest mountain. You can listen to the airflow betw\n" +
-                " but yet, there is a key, and there is a closed do\n" +
+        helper.assertResult("High castle\n" +
+                "You are in the highest tower of a castle in the\n" +
+                "highest mountain. You can listen to the airflow\n" +
+                "between your ears. It seems that there is nobody\n" +
+                "here, but yet, there is a key, and there is a\n" +
+                "closed door that brings to the highest room of\n" +
+                "this castle.\n" +
                 "Exits: north.\n" +
                 "Player has 16 life points.");
 
@@ -161,11 +177,14 @@ public class RoomRefreshTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("High castle\n" +
-                "You are in the highest tower of a castle in the hi\n" +
-                "ghest mountain. You can listen to the airflow betw\n" +
-                " but yet, there is a key, and there is a closed do\n" +
-                "Exits: north (closed).\n" +
+                "You are in the highest tower of a castle in the\n" +
+                "highest mountain. You can listen to the airflow\n" +
+                "between your ears. It seems that there is nobody\n" +
+                "here, but yet, there is a key, and there is a\n" +
+                "closed door that brings to the highest room of\n" +
+                "this castle.\n" +
                 "There is the rusty key key.\n" +
+                "Exits: north (closed).\n" +
                 "Player has 16 life points.");
     }
 
@@ -178,20 +197,22 @@ public class RoomRefreshTests {
         helper.runCommand("kirito", "move", "north");
         helper.runCommand("kirito", "attack");
         helper.assertResult("Highest room\n" +
-                "There is a monster here. Just old. Just waiting fo\n" +
-                "r you. It has that object that you wish for your w\n" +
-                "Exits: south.\n" +
+                "There is a monster here. Just old. Just waiting\n" +
+                "for you. It has that object that you wish for\n" +
+                "your whole life.\n" +
                 "There is the wisdom sphere key.\n" +
+                "Exits: south.\n" +
                 "Player has 16 life points.");
 
         timerTaskRunnerMock.fireTaks();
 
         helper.runCommand("kirito", "look");
         helper.assertResult("Highest room\n" +
-                "There is a monster here. Just old. Just waiting fo\n" +
-                "r you. It has that object that you wish for your w\n" +
-                "Exits: south.\n" +
+                "There is a monster here. Just old. Just waiting\n" +
+                "for you. It has that object that you wish for\n" +
+                "your whole life.\n" +
                 "There is the snail monster.\n" +
+                "Exits: south.\n" +
                 "Player has 16 life points.");
     }
 }

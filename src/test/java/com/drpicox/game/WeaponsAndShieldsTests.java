@@ -47,6 +47,10 @@ public class WeaponsAndShieldsTests {
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+
+        var mustacheStringifier = new MustacheGameStringifier();
+        decorateMustache(mustacheStringifier);
+        helper.setGameResultStringifier(mustacheStringifier);
     }
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
@@ -153,35 +157,39 @@ public class WeaponsAndShieldsTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("Home sweet home\n" +
-                "You are at the main room of your home. It seems th\n" +
-                "at your last order just arrived, a mighty sword ab\n" +
-                "Exits: south.\n" +
+                "You are at the main room of your home. It seems\n" +
+                "that your last order just arrived, a mighty sword\n" +
+                "able to cut through rocks.\n" +
                 "There is the swordstone weapon.\n" +
+                "Exits: south.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Home sweet home\n" +
-                "You are at the main room of your home. It seems th\n" +
-                "at your last order just arrived, a mighty sword ab\n" +
+                "You are at the main room of your home. It seems\n" +
+                "that your last order just arrived, a mighty sword\n" +
+                "able to cut through rocks.\n" +
                 "Exits: south.\n" +
                 "Player has the swordstone weapon.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "move", "south");
         helper.assertResult("Cabin\n" +
-                "You are in front of your cabin. There is a Goron h\n" +
-                "ere. Gorons are famous for having prominent treasu\n" +
-                "Exits: north, south.\n" +
+                "You are in front of your cabin. There is a Goron\n" +
+                "here. Gorons are famous for having prominent\n" +
+                "treasures. It seems very hard.\n" +
                 "There is the Goron monster.\n" +
+                "Exits: north, south.\n" +
                 "Player has the swordstone weapon.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "attack");
         helper.assertResult("Cabin\n" +
-                "You are in front of your cabin. There is a Goron h\n" +
-                "ere. Gorons are famous for having prominent treasu\n" +
-                "Exits: north, south.\n" +
+                "You are in front of your cabin. There is a Goron\n" +
+                "here. Gorons are famous for having prominent\n" +
+                "treasures. It seems very hard.\n" +
                 "There is the rockshield shield.\n" +
+                "Exits: north, south.\n" +
                 "Player has the swordstone weapon.\n" +
                 "Player has 8 life points.");
     }
@@ -196,8 +204,9 @@ public class WeaponsAndShieldsTests {
         helper.runCommand("kirito", "attack");
         helper.runCommand("kirito", "get");
         helper.assertResult("Cabin\n" +
-                "You are in front of your cabin. There is a Goron h\n" +
-                "ere. Gorons are famous for having prominent treasu\n" +
+                "You are in front of your cabin. There is a Goron\n" +
+                "here. Gorons are famous for having prominent\n" +
+                "treasures. It seems very hard.\n" +
                 "Exits: north, south.\n" +
                 "Player has the rockshield shield.\n" +
                 "Player has the swordstone weapon.\n" +
@@ -205,20 +214,22 @@ public class WeaponsAndShieldsTests {
 
         helper.runCommand("kirito", "move", "south");
         helper.assertResult("Goron nest\n" +
-                "You are inside a cave in the mountain. You found y\n" +
-                "ourself in the middle of a Goron Nest. You wonder \n" +
-                "Exits: north, east (closed).\n" +
+                "You are inside a cave in the mountain. You found\n" +
+                "yourself in the middle of a Goron Nest. You\n" +
+                "wonder which marvelous treasures may hide.\n" +
                 "There is the Goron chief monster.\n" +
+                "Exits: north, east (closed).\n" +
                 "Player has the rockshield shield.\n" +
                 "Player has the swordstone weapon.\n" +
                 "Player has 8 life points.");
 
         helper.runCommand("kirito", "attack");
         helper.assertResult("Goron nest\n" +
-                "You are inside a cave in the mountain. You found y\n" +
-                "ourself in the middle of a Goron Nest. You wonder \n" +
-                "Exits: north, east (closed).\n" +
+                "You are inside a cave in the mountain. You found\n" +
+                "yourself in the middle of a Goron Nest. You\n" +
+                "wonder which marvelous treasures may hide.\n" +
                 "There is the armory key key.\n" +
+                "Exits: north, east (closed).\n" +
                 "Player has the rockshield shield.\n" +
                 "Player has the swordstone weapon.\n" +
                 "Player has 6 life points.");
@@ -237,8 +248,9 @@ public class WeaponsAndShieldsTests {
         helper.runCommand("kirito", "attack");
         helper.runCommand("kirito", "get");
         helper.assertResult("Goron nest\n" +
-                "You are inside a cave in the mountain. You found y\n" +
-                "ourself in the middle of a Goron Nest. You wonder \n" +
+                "You are inside a cave in the mountain. You found\n" +
+                "yourself in the middle of a Goron Nest. You\n" +
+                "wonder which marvelous treasures may hide.\n" +
                 "Exits: north, east (closed).\n" +
                 "Player has the armory key key.\n" +
                 "Player has the rockshield shield.\n" +
@@ -260,20 +272,20 @@ public class WeaponsAndShieldsTests {
         helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Goron armory\n" +
-                "You managed to enter the armory. It is full of wea\n" +
-                "pons and fabulous treasures.\n" +
-                "Exits: east, west.\n" +
+                "You managed to enter the armory. It is full of\n" +
+                "weapons and fabulous treasures.\n" +
                 "There is the ultimate sword weapon.\n" +
+                "Exits: east, west.\n" +
                 "Player has the rockshield shield.\n" +
                 "Player has the swordstone weapon.\n" +
                 "Player has 6 life points.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Goron armory\n" +
-                "You managed to enter the armory. It is full of wea\n" +
-                "pons and fabulous treasures.\n" +
-                "Exits: east, west.\n" +
+                "You managed to enter the armory. It is full of\n" +
+                "weapons and fabulous treasures.\n" +
                 "There is the swordstone weapon.\n" +
+                "Exits: east, west.\n" +
                 "Player has the rockshield shield.\n" +
                 "Player has the ultimate sword weapon.\n" +
                 "Player has 6 life points.");
@@ -295,22 +307,24 @@ public class WeaponsAndShieldsTests {
         helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Goron defense room\n" +
-                "Finally, you managed to arrive here. Here Gorons s\n" +
-                "tore the finest and effective shields in the world\n" +
-                " they seem.\n" +
-                "Exits: north, west.\n" +
+                "Finally, you managed to arrive here. Here Gorons\n" +
+                "store the finest and effective shields in the\n" +
+                "world. It is pretty sure that they are more\n" +
+                "strong that they seem.\n" +
                 "There is the paper shield shield.\n" +
+                "Exits: north, west.\n" +
                 "Player has the rockshield shield.\n" +
                 "Player has the ultimate sword weapon.\n" +
                 "Player has 6 life points.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Goron defense room\n" +
-                "Finally, you managed to arrive here. Here Gorons s\n" +
-                "tore the finest and effective shields in the world\n" +
-                " they seem.\n" +
-                "Exits: north, west.\n" +
+                "Finally, you managed to arrive here. Here Gorons\n" +
+                "store the finest and effective shields in the\n" +
+                "world. It is pretty sure that they are more\n" +
+                "strong that they seem.\n" +
                 "There is the rockshield shield.\n" +
+                "Exits: north, west.\n" +
                 "Player has the paper shield shield.\n" +
                 "Player has the ultimate sword weapon.\n" +
                 "Player has 6 life points.");
@@ -338,8 +352,9 @@ public class WeaponsAndShieldsTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("Home sweet home\n" +
-                "You are at the main room of your home. It seems th\n" +
-                "at your last order just arrived, a mighty sword ab\n" +
+                "You are at the main room of your home. It seems\n" +
+                "that your last order just arrived, a mighty sword\n" +
+                "able to cut through rocks.\n" +
                 "Exits: south.\n" +
                 "Player has 16 life points.");
     }

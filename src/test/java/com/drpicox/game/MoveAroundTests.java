@@ -46,6 +46,10 @@ public class MoveAroundTests {
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+
+        var mustacheStringifier = new MustacheGameStringifier();
+        decorateMustache(mustacheStringifier);
+        helper.setGameResultStringifier(mustacheStringifier);
     }
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
@@ -160,12 +164,15 @@ public class MoveAroundTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("A new world\n" +
-                "You see in front of your eyes one of the most beau\n" +
-                "tiful and incredible worlds that you can imagine. \n" +
-                "ith tiny islands, in the east, just far away, you \n" +
-                "the clouds.\n" +
-                "Exits: north, south, west.\n" +
-                "Player has 16 life points.");
+                "You see in front of your eyes one of the most\n" +
+                "beautiful and incredible worlds that you can\n" +
+                "imagine. Towards the south, you can see a big sea\n" +
+                "spotted with tiny islands, in the east, just far\n" +
+                "away, you can see the City of the East, with big\n" +
+                "spikes pointing to the sky, and in the west,\n" +
+                "there is the Enchanted Forest and the Eternity\n" +
+                "Mountains reaching the clouds.\n" +
+                "Exits: north, south, west.");
     }
 
     @Test
@@ -174,11 +181,12 @@ public class MoveAroundTests {
 
         helper.runCommand("kirito", "move", "south");
         helper.assertResult("Crystal Beach\n" +
-                "There is one of the most beautiful beaches that yo\n" +
-                "u can imagine. Soft sand, great palm trees, water \n" +
-                "n endless sea, with some spotted islands far away.\n" +
-                "Exits: north, west.\n" +
-                "Player has 16 life points.");
+                "There is one of the most beautiful beaches that\n" +
+                "you can imagine. Soft sand, great palm trees,\n" +
+                "water so crystal that you can see fishes\n" +
+                "swimming. And an endless sea, with some spotted\n" +
+                "islands far away.\n" +
+                "Exits: north, west.");
     }
 
     @Test
@@ -189,27 +197,31 @@ public class MoveAroundTests {
 
         helper.runCommand("kirito", "move", "west");
         helper.assertResult("Crystal Beach\n" +
-                "The beach extends until the infinity. You are wond\n" +
-                "ering if you start walking direction west will the\n" +
-                "all path that goes to the Enchanted Forest.\n" +
-                "Exits: north, east.\n" +
-                "Player has 16 life points.");
+                "The beach extends until the infinity. You are\n" +
+                "wondering if you start walking direction west\n" +
+                "will the beach continue forever. You see in the\n" +
+                "north a small path that goes to the Enchanted\n" +
+                "Forest.\n" +
+                "Exits: north, east.");
 
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("Enchanted Forest\n" +
-                "There is a small river traversing the Enchanted Fo\n" +
-                "rest that is flowing to the west. The sound of the\n" +
-                "Exits: south, east.\n" +
-                "Player has 16 life points.");
+                "There is a small river traversing the Enchanted\n" +
+                "Forest that is flowing to the west. The sound of\n" +
+                "the water sounds like music.\n" +
+                "Exits: south, east.");
 
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("A new world\n" +
-                "You see in front of your eyes one of the most beau\n" +
-                "tiful and incredible worlds that you can imagine. \n" +
-                "ith tiny islands, in the east, just far away, you \n" +
-                "the clouds.\n" +
-                "Exits: north, south, west.\n" +
-                "Player has 16 life points.");
+                "You see in front of your eyes one of the most\n" +
+                "beautiful and incredible worlds that you can\n" +
+                "imagine. Towards the south, you can see a big sea\n" +
+                "spotted with tiny islands, in the east, just far\n" +
+                "away, you can see the City of the East, with big\n" +
+                "spikes pointing to the sky, and in the west,\n" +
+                "there is the Enchanted Forest and the Eternity\n" +
+                "Mountains reaching the clouds.\n" +
+                "Exits: north, south, west.");
     }
 
     @Test
@@ -227,17 +239,19 @@ public class MoveAroundTests {
 
         helper.runCommand("kirito", "move", "north");
         helper.assertResult("Cabin\n" +
-                "That is your cabin. Old fashioned wooden made. You\n" +
-                " are in the yard in front of it, with beautiful ve\n" +
-                " is a small path towards the Enchanted Forest.\n" +
-                "Exits: south, east.\n" +
-                "Player has 16 life points.");
+                "That is your cabin. Old fashioned wooden made.\n" +
+                "You are in the yard in front of it, with\n" +
+                "beautiful vegetation and a nice Porch. Towards\n" +
+                "the west, there is a small path towards the\n" +
+                "Enchanted Forest.\n" +
+                "Exits: south, east.");
 
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Well\n" +
-                "You fell into the Well. It is dark and moisty. The\n" +
-                " water level reaches your waist. You tried to clim\n" +
-                "id to the bottom again. It seems that you are trap\n" +
-                "Player has 16 life points.");
+                "You fell into the Well. It is dark and moisty.\n" +
+                "The water level reaches your waist. You tried to\n" +
+                "climb the walls of the well, but rocks are wet.\n" +
+                "You slid to the bottom again. It seems that you\n" +
+                "are trapped without exit.");
     }
 }

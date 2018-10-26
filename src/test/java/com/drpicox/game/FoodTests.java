@@ -45,6 +45,10 @@ public class FoodTests {
     @Before @After
     public void cleanup() throws Exception {
         helper.cleanup();
+
+        var mustacheStringifier = new MustacheGameStringifier();
+        decorateMustache(mustacheStringifier);
+        helper.setGameResultStringifier(mustacheStringifier);
     }
 
     public static void decorateMustache(MustacheGameStringifier mustache) {
@@ -97,23 +101,23 @@ public class FoodTests {
 
         helper.runCommand("kirito", "look");
         helper.assertResult("Home sweet home\n" +
-                "You are at the main room of your home. There is a \n" +
+                "You are at the main room of your home. There is a\n" +
                 "disturbing little noise around.\n" +
-                "Exits: east.\n" +
                 "There is the mosquito monster.\n" +
+                "Exits: east.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "attack");
         helper.assertResult("Home sweet home\n" +
-                "You are at the main room of your home. There is a \n" +
+                "You are at the main room of your home. There is a\n" +
                 "disturbing little noise around.\n" +
-                "Exits: east.\n" +
                 "There is the mosquito leg food.\n" +
+                "Exits: east.\n" +
                 "Player has 14 life points.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Home sweet home\n" +
-                "You are at the main room of your home. There is a \n" +
+                "You are at the main room of your home. There is a\n" +
                 "disturbing little noise around.\n" +
                 "Exits: east.\n" +
                 "Player has 16 life points.");
@@ -128,16 +132,18 @@ public class FoodTests {
         helper.runCommand("kirito", "get");
         helper.runCommand("kirito", "move", "east");
         helper.assertResult("Kitchen\n" +
-                "That is the kitchen. That is the place where you p\n" +
-                "repare your most delicious dishes. What is that th\n" +
-                "Exits: west.\n" +
+                "That is the kitchen. That is the place where you\n" +
+                "prepare your most delicious dishes. What is that\n" +
+                "that smells so good?\n" +
                 "There is the best cake ever food.\n" +
+                "Exits: west.\n" +
                 "Player has 16 life points.");
 
         helper.runCommand("kirito", "get");
         helper.assertResult("Kitchen\n" +
-                "That is the kitchen. That is the place where you p\n" +
-                "repare your most delicious dishes. What is that th\n" +
+                "That is the kitchen. That is the place where you\n" +
+                "prepare your most delicious dishes. What is that\n" +
+                "that smells so good?\n" +
                 "Exits: west.\n" +
                 "Player has 16 life points.");
     }
