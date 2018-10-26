@@ -15,6 +15,7 @@
  */
 package com.drpicox.game;
 
+import com.drpicox.game.tools.MustacheGameStringifier;
 import com.drpicox.game.tools.WorldBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -45,6 +46,15 @@ public class HelloWorldTests {
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+    }
+
+    public static void decorateMustache(MustacheGameStringifier mustache) {
+        mustache.setBody("" +
+                "{{#room}}{{>room}}{{/room}}");
+
+        mustache.setTemplate("room", "" +
+                "{{name}}\n" +
+                "{{description}}\n");
     }
 
     public static WorldBuilder buildWorld() {

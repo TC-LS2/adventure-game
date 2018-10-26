@@ -16,6 +16,7 @@
 package com.drpicox.game;
 
 import com.drpicox.game.rooms.Direction;
+import com.drpicox.game.tools.MustacheGameStringifier;
 import com.drpicox.game.tools.WorldBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -45,6 +46,24 @@ public class MonstersTests {
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+    }
+
+    public static void decorateMustache(MustacheGameStringifier mustache) {
+        KeysAndDoorsTests.decorateMustache(mustache);
+
+        mustache.setTemplate("room", "" +
+                "{{name}}\n" +
+                "{{description}}\n" +
+                "{{#item}}{{>roomItem}}{{/item}}" +
+                "{{#monster}}{{>roomMonster}}{{/monster}}" +
+                "{{#exits}}{{>exits}}{{/exits}}");
+
+        mustache.setTemplate("roomMonster", "" +
+                "There is the {{name}} monster.\n");
+
+        mustache.setTemplate("player", "" +
+                "{{#key}}{{>playerItem}}{{/key}}" +
+                "Player has {{lifePoints}} life points.\n");
     }
 
     public static WorldBuilder buildWorld() {

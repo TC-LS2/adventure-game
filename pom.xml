@@ -50,6 +50,13 @@
             <version>2.8.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <!-- https://github.com/samskivert/jmustache -->
+            <groupId>com.samskivert</groupId>
+            <artifactId>jmustache</artifactId>
+            <version>1.14</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <properties>

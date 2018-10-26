@@ -142,9 +142,9 @@ public class TestHelper {
         var resultGame = fromJson(resultJson, Map.class);
         var resultString = gameToString(resultGame);
 
+        System.out.println(resultString);
         if (!suspendAssert)
             assertThat(commandsString + resultString, is(commandsString + expectedResult));
-        System.out.println(resultString);
     }
 
     private String getCommandsString() {
@@ -155,6 +155,9 @@ public class TestHelper {
         return gameResultStringifier.toString(game);
     }
 
+    public void setGameResultStringifier(GameResultStringifier gameResultStringifier) {
+        this.gameResultStringifier = gameResultStringifier;
+    }
 
     public ResultActions runCommand(String username, String command, String ...arguments) throws Exception {
         var commandString = "> " + command + " " + String.join(" ", arguments);

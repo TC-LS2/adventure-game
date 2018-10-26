@@ -16,6 +16,7 @@
 package com.drpicox.game;
 
 import com.drpicox.game.rooms.Direction;
+import com.drpicox.game.tools.MustacheGameStringifier;
 import com.drpicox.game.tools.WorldBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -45,6 +46,23 @@ public class MoveAroundTests {
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+    }
+
+    public static void decorateMustache(MustacheGameStringifier mustache) {
+        HelloWorldTests.decorateMustache(mustache);
+
+        mustache.setTemplate("room", "" +
+                "{{name}}\n" +
+                "{{description}}\n" +
+                "{{#exits}}{{>exits}}{{/exits}}");
+
+        mustache.setTemplate("exits", "" +
+                "{{#-first}}Exits: {{/-first}}" +
+                "{{^-first}}, {{/-first}}" +
+                "{{>exit}}" +
+                "{{#-last}}.\n{{/-last}}");
+
+        mustache.setTemplate("exit", "{{name}}");
     }
 
     public static WorldBuilder buildWorld() {

@@ -17,6 +17,7 @@ package com.drpicox.game;
 
 import com.drpicox.game.TestHelper;
 import com.drpicox.game.rooms.Direction;
+import com.drpicox.game.tools.MustacheGameStringifier;
 import com.drpicox.game.tools.WorldBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -46,6 +47,16 @@ public class WeaponsAndShieldsTests {
     @After
     public void cleanup() throws Exception {
         helper.cleanup();
+    }
+
+    public static void decorateMustache(MustacheGameStringifier mustache) {
+        MonstersTests.decorateMustache(mustache);
+
+        mustache.setTemplate("player", "" +
+                "{{#key}}{{>playerItem}}{{/key}}" +
+                "{{#shield}}{{>playerItem}}{{/shield}}" +
+                "{{#weapon}}{{>playerItem}}{{/weapon}}" +
+                "Player has {{lifePoints}} life points.\n");
     }
 
     public static WorldBuilder buildWorld() {

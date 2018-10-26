@@ -16,6 +16,7 @@
 package com.drpicox.game;
 
 import com.drpicox.game.rooms.Direction;
+import com.drpicox.game.tools.MustacheGameStringifier;
 import com.drpicox.game.tools.WorldBuilder;
 import org.hamcrest.Matcher;
 import org.junit.After;
@@ -45,6 +46,32 @@ public class KeysAndDoorsTests {
     @Before @After
     public void cleanup() throws Exception {
         helper.cleanup();
+    }
+
+    public static void decorateMustache(MustacheGameStringifier mustache) {
+        MoveAroundTests.decorateMustache(mustache);
+
+        mustache.setBody("" +
+                "{{#room}}{{>room}}{{/room}}" +
+                "{{#player}}{{>player}}{{/player}}");
+
+        mustache.setTemplate("room", "" +
+                "{{name}}\n" +
+                "{{description}}\n" +
+                "{{#item}}{{>roomItem}}{{/item}}" +
+                "{{#exits}}{{>exits}}{{/exits}}");
+
+        mustache.setTemplate("exit", "" +
+                "{{name}}{{^open}} (closed){{/open}}");
+
+        mustache.setTemplate("roomItem", "" +
+                "There is the {{name}} {{type}}.\n");
+
+        mustache.setTemplate("player", "" +
+                "{{#key}}{{>playerItem}}{{/key}}");
+
+        mustache.setTemplate("playerItem", "" +
+                "Player has the {{name}} {{type}}.\n");
     }
 
     public static WorldBuilder buildWorld() {

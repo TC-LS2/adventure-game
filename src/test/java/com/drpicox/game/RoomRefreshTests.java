@@ -17,6 +17,7 @@ package com.drpicox.game;
 
 import com.drpicox.game.mocks.TimerTaskRunnerMock;
 import com.drpicox.game.rooms.Direction;
+import com.drpicox.game.tools.MustacheGameStringifier;
 import com.drpicox.game.tools.WorldBuilder;
 import org.junit.After;
 import org.junit.Before;
@@ -44,6 +45,10 @@ public class RoomRefreshTests {
     @Before @After
     public void cleanup() throws Exception {
         helper.cleanup();
+    }
+
+    public static void decorateMustache(MustacheGameStringifier mustache) {
+        WeaponsAndShieldsTests.decorateMustache(mustache);
     }
 
     public static WorldBuilder buildWorld() {
