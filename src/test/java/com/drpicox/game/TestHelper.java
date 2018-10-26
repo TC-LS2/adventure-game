@@ -51,7 +51,7 @@ public class TestHelper {
     private boolean suspendAssert = false;
 
     /* change it in @Before of tests that require a different snapshot shape (add a set) */
-    private GameResultStringifier gameResultStringifier = new GameResultStringifier();
+    private GameResultStringifier gameResultStringifier;
 
 
     public final MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
@@ -81,12 +81,15 @@ public class TestHelper {
     public void cleanup() {
         if (suspendAssert) System.out.println("! alerts suspended !!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         else System.out.println("> █\n= cleanup =====================================");
+
         playerRepository.deleteAll();
         roomRepository.deleteAll();
         monsterRepository.deleteAll();
         itemRepository.deleteAll();
         commandsStrings.clear();
         timerTaskRunnerMock.clear();
+
+         gameResultStringifier = new GameResultStringifier();
     }
 
     public String toJson(Object object) {
